@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+  <script>
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC46Vv6VCIua2Km0wwBIh231a7BWqKuQq4",
+  authDomain: "livspace-f1677.firebaseapp.com",
+  projectId: "livspace-f1677",
+  storageBucket: "livspace-f1677.firebasestorage.app",
+  messagingSenderId: "706541523044",
+  appId: "1:706541523044:web:2cac82b5d211773e7e4f71",
+  measurementId: "G-3VBTVHFF4K"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function sendOTP() {
+      const phoneNumber = document.getElementById("phone").value;
+      const appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+      auth.signInWithPhoneNumber(phoneNumber, appVerifier)
+        .then((confirmationResult) => {
+          window.confirmationResult = confirmationResult;
+          alert("OTP sent!");
+        }).catch((error) => {
+          alert(error.message);
+        });
+    }
+
+    function verifyOTP() {
+      const otp = document.getElementById("otp").value;
+      confirmationResult.confirm(otp).then((result) => {
+        alert("OTP verified!");
+      }).catch((error) => {
+        alert("Verification failed: " + error.message);
+      });
+    }
+  </script>
+</head>
+<body>
+  <input type="text" id="phone" placeholder="Enter phone number" />
+  <button onclick="sendOTP()">Send OTP</button>
+  <div id="recaptcha-container"></div>
+  <br>
+  <input type="text" id="otp" placeholder="Enter OTP" />
+  <button onclick="verifyOTP()">Verify OTP</button>
+</body>
+</html>
